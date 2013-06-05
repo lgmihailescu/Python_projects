@@ -4,5 +4,5 @@ import sys
 
 while True:
     for line in sys.stdin.readlines():
-    print line
+        print line
     
