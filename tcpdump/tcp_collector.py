@@ -2,6 +2,7 @@
 
 import sys
 
-for line in sys.stdin.readlines():
+while True:
+    for line in sys.stdin.readlines():
     print "@@@@@" + line
     
