@@ -2,7 +2,7 @@
 
 import sys
 
-while true:
+while True:
     for line in sys.stdin.readlines():
         print line,
     
