@@ -2,7 +2,13 @@
 
 import sys
 
-while True:
-    for line in sys.stdin.readlines():
-        print line,
-    
+while 1:
+    try:
+        line = sys.stdin.readline()
+    except KeyboardInterrupt:
+        break
+
+    if not line:
+        break
+
+    print line
