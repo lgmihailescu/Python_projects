@@ -3,5 +3,5 @@
 import sys
 
 for line in sys.stdin.readlines():
-    if line[0] == '#':
-        print line
+    print "@@@@@" + line
+    
