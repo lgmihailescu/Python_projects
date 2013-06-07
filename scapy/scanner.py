@@ -1,9 +1,9 @@
 from scapy.all import *
-#import scapy
+
 
 def scanner(pkt):
     if IP in pkt:
-        #and pkt[IP].proto == UDP:
-        return pkt.sprintf("%IP.src%:%TCP.sport% >>> %IP.dst%:%TCP.dport%")
+        if UDP in pkt:
+            return pkt.sprintf("%IP.src%:%UDP.sport% >>> %IP.dst%:%UDP.dport% -- query %DNSQR.qtype%")
 
-sniff(prn=scanner, filter="port 53", store=0)
+sniff(prn=scanner, filter=None, store=0)
