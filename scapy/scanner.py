@@ -2,8 +2,9 @@ from scapy.all import *
 
 
 def scanner(pkt):
-    if IP in pkt:
+    if pkt.haslayer(DNS) and pkt.haslayer(DNSQR):
         if UDP in pkt:
-            return pkt.sprintf("%IP.src%:%UDP.sport% >>> %IP.dst%:%UDP.dport% -- query %DNS.DNSQR.qtype%")
+            dnsqr = pkt.getlayer(DNSQR)
+            return pkt.sprintf("%IP.src%:%UDP.sport% >>> %IP.dst%:%UDP.dport% ") + dnsqr.sprintf("%qname% %qclass% %qtype%").replace("'","")
 
 sniff(prn=scanner, filter=None, store=0)
