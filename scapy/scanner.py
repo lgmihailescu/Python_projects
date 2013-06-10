@@ -10,5 +10,3 @@ try:
     sniff(prn=scanner, filter=None, store=0)
 except KeyboardInterrupt:
     exit(0)
-
-    
