@@ -10,7 +10,8 @@ def scanner(pkt):
         q = pkt.getlayer(DNSQR)
         tokens = ('.' + q.qname.rstrip('.')).rsplit('.', 2)
         name , zone = tokens[0].lstrip('.'), '.'.join(tokens[-2:])
-        line = dict(timestamp=datetime.datetime.utcnow().replace(microsecond=0),
+        timestamp = datetime.datetime.utcnow().replace(microsecond=0)
+        line = dict(stimestamp=timestamp,
                     ipdst=pkt.sprintf('%IP.dst%'),
                     sname=name or '@',
                     szone=zone,
