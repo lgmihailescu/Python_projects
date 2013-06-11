@@ -11,11 +11,16 @@ def scanner(pkt):
         tokens = ('.' + q.qname.rstrip('.')).rsplit('.', 2)
         name , zone = tokens[0].lstrip('.'), '.'.join(tokens[-2:])
         timestamp = datetime.datetime.utcnow().replace(microsecond=0)
-        line = dict(stimestamp=timestamp,
-                    ipdst=pkt.sprintf('%IP.dst%'),
-                    sname=name or '@',
-                    szone=zone,
-                    qtype=q.sprintf('%qtype%'))
+        sname=name or '@'
+        szone=zone
+        qtype=q.sprintf('%qtype%')
+        ipdst=pkt.sprintf('%IP.dst%')
+        
+        line = dict('time': timestamp,
+                    'ipdst': ipdst,
+                    'sname': sname,
+                    'szone': szone,
+                    'qtype': qtype)
 
 
 #        '{timestamp} {ipdst} {name} {zone} {type}'.format(
