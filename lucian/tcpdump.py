@@ -29,7 +29,7 @@ def scanner(pkt):
             out_file.flush()
             return line
         else:
-            return line.ipdst
+            return line
         # return pkt.sprintf("%IP.src%:%UDP.sport% >>> %IP.dst%:%UDP.dport% ") + dnsqr.sprintf("%qname% %qclass% %qtype%").replace("'","")
 
 if __name__ == '__main__':
