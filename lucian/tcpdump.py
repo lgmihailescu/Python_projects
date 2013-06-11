@@ -7,11 +7,11 @@ from scapy.all import *
 
 class Packet:
     def __init__(self, time, ipdst, sname, szone, qtype):
-        self.time = time
-        self.ipdst = ipdst
-        self.sname = sname
-        self.szone = szone
-        self.qtype = qtype
+        self.time = str(time)
+        self.ipdst = str(ipdst)
+        self.sname = str(sname)
+        self.szone = str(szone)
+        self.qtype = str(qtype)
         
     def displayPacket(self):
         return self.time + "    " + self.ipdst + "    " + self.sname + "    " + self.szone + "    " + self.qtype
