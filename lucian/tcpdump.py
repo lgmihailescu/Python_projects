@@ -15,9 +15,7 @@ class Packet:
         
     def displayPacket(self):
         return self.time + "    " + self.ipdst + "    " + self.sname + "    " + self.szone + "    " + self.qtype
-      
-
-      
+           
 
 def scanner(pkt):
     if pkt.haslayer(DNSQR):
@@ -27,24 +25,10 @@ def scanner(pkt):
         timestamp = datetime.datetime.utcnow().replace(microsecond=0)
         sname=name or '@'
         szone=zone
-        qtype=q.sprintf('%qtype%')
+        qtype=q.sprintf("%qname%    %qclass%    %qtype%").replace("'","")
         ipdst=pkt.sprintf('%IP.dst%')
 
         a = Packet(timestamp,ipdst,sname,szone,qtype)
-        
-#        line = dict('time': timestamp,
-#                    'ipdst': ipdst,
-#                    'sname': sname,
-#                    'szone': szone,
-#                    'qtype': qtype)
-
-
-#        '{timestamp} {ipdst} {name} {zone} {type}'.format(
-#            timestamp=datetime.datetime.utcnow().replace(microsecond=0),
-#            ipdst=pkt.sprintf('%IP.dst%'),
-#            name=name or '@',
-#            zone=zone,
-#            type=q.sprintf('%qtype%'),)
 
         if out_file:
             out_file.write('%s\n' % a.displayPacket())
@@ -52,7 +36,7 @@ def scanner(pkt):
             print a.displayPacket()
         else:
             print a.displayPacket()
-        # return pkt.sprintf("%IP.src%:%UDP.sport% >>> %IP.dst%:%UDP.dport% ") + dnsqr.sprintf("%qname% %qclass% %qtype%").replace("'","")
+            
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Capture DNS queries and output to specified directory')
