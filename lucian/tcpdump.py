@@ -47,7 +47,7 @@ def scanner(pkt):
 #            type=q.sprintf('%qtype%'),)
 
         if out_file:
-            out_file.write('%s\n' % line)
+            out_file.write('%s\n' % a.displayPacket())
             out_file.flush()
             print a.displayPacket()
         else:
