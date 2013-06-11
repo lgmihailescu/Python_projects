@@ -28,9 +28,9 @@ def scanner(pkt):
         if out_file:
             out_file.write('%s\n' % line)
             out_file.flush()
-            return line
+            return line[stimestamp]+"   "+line[ipdst]+"   "+line[sname]+"   "+line[szone]+"   "+line[qtype]
         else:
-            return line
+            return line[stimestamp]+"   "+line[ipdst]+"   "+line[sname]+"   "+line[szone]+"   "+line[qtype]
         # return pkt.sprintf("%IP.src%:%UDP.sport% >>> %IP.dst%:%UDP.dport% ") + dnsqr.sprintf("%qname% %qclass% %qtype%").replace("'","")
 
 if __name__ == '__main__':
