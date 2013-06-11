@@ -5,6 +5,20 @@ import argparse
 
 from scapy.all import *
 
+class Packet:
+    def __init__(self, time, ipdst, sname, szone, qtype):
+        self.time = time
+        self.ipdst = ipdst
+        self.sname = sname
+        self.szone = szone
+        self.qtype = qtype
+        
+    def displayPacket(self):
+        return self.time + "    " + self.ipdst + "    " + self.sname + "    " + self.szone + "    " + self.qtype
+      
+
+      
+
 def scanner(pkt):
     if pkt.haslayer(DNSQR):
         q = pkt.getlayer(DNSQR)
@@ -15,12 +29,14 @@ def scanner(pkt):
         szone=zone
         qtype=q.sprintf('%qtype%')
         ipdst=pkt.sprintf('%IP.dst%')
+
+        a = Packet(timestamp,ipdst,sname,szone,qtype)
         
-        line = dict('time': timestamp,
-                    'ipdst': ipdst,
-                    'sname': sname,
-                    'szone': szone,
-                    'qtype': qtype)
+#        line = dict('time': timestamp,
+#                    'ipdst': ipdst,
+#                    'sname': sname,
+#                    'szone': szone,
+#                    'qtype': qtype)
 
 
 #        '{timestamp} {ipdst} {name} {zone} {type}'.format(
@@ -33,9 +49,9 @@ def scanner(pkt):
         if out_file:
             out_file.write('%s\n' % line)
             out_file.flush()
-            return line[stimestamp]+"   "+line[ipdst]+"   "+line[sname]+"   "+line[szone]+"   "+line[qtype]
+            print a.displayPacket()
         else:
-            return line[stimestamp]+"   "+line[ipdst]+"   "+line[sname]+"   "+line[szone]+"   "+line[qtype]
+            print a.displayPacket()
         # return pkt.sprintf("%IP.src%:%UDP.sport% >>> %IP.dst%:%UDP.dport% ") + dnsqr.sprintf("%qname% %qclass% %qtype%").replace("'","")
 
 if __name__ == '__main__':
