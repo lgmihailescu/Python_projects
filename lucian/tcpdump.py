@@ -2,6 +2,8 @@
 
 import datetime
 import argparse
+import whois
+
 
 from scapy.all import *
 
