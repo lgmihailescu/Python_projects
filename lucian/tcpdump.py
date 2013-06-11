@@ -10,12 +10,20 @@ def scanner(pkt):
         q = pkt.getlayer(DNSQR)
         tokens = ('.' + q.qname.rstrip('.')).rsplit('.', 2)
         name , zone = tokens[0].lstrip('.'), '.'.join(tokens[-2:])
-        line = '{timestamp} {ipdst} {name} {zone} {type}'.format(
-            timestamp=datetime.datetime.utcnow().replace(microsecond=0),
-            ipdst=pkt.sprintf('%IP.dst%'),
-            name=name or '@',
-            zone=zone,
-            type=q.sprintf('%qtype%'),)
+        line = dict(timestamp=datetime.datetime.utcnow().replace(microsecond=0),
+                    ipdst=pkt.sprintf('%IP.dst%'),
+                    sname=name or '@',
+                    szone=zone,
+                    qtype=q.sprintf('%qtype%'))
+
+
+#        '{timestamp} {ipdst} {name} {zone} {type}'.format(
+#            timestamp=datetime.datetime.utcnow().replace(microsecond=0),
+#            ipdst=pkt.sprintf('%IP.dst%'),
+#            name=name or '@',
+#            zone=zone,
+#            type=q.sprintf('%qtype%'),)
+
         if out_file:
             out_file.write('%s\n' % line)
             out_file.flush()
