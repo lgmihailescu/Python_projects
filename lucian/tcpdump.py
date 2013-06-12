@@ -15,7 +15,7 @@ class Packet:
         self.szone = str(szone)
         self.qtype = str(qtype)
         
-    def displayPacket(self):
+    def display_packet(self):
         return self.time + "    " + self.ipdst + "    " + self.sname + "    " + self.szone + "    " + self.qtype
            
 
@@ -33,11 +33,11 @@ def scanner(pkt):
         a = Packet(timestamp,ipdst,sname,szone,qtype)
 
         if out_file:
-            out_file.write('%s\n' % a.displayPacket())
+            out_file.write('%s\n' % a.display_packet())
             out_file.flush()
-            print a.displayPacket()
+            print a.display_packet()
         else:
-            print a.displayPacket()
+            print a.display_packet()
             
 
 if __name__ == '__main__':
