@@ -28,7 +28,7 @@ def scanner(pkt):
         timestamp = datetime.datetime.utcnow().replace(microsecond=0)
         sname=name or '@'
         szone=zone
-        qtype=q.sprintf("%qname%    %qclass%    %qtype%").replace("'","")
+        qtype=q.sprintf('%qtype%')
         ipdst=pkt.sprintf('%IP.dst%')
 
         a = Packet(timestamp,ipdst,sname,szone,qtype)
