@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import os
 import datetime
 import argparse
 import whois
@@ -50,8 +49,7 @@ if __name__ == '__main__':
 
     try:
         if args.output:
-            os.mkdir(args.output)
-            out_file = open(os.path.join(out_dir, args.output,"testfile.log"), 'a')
+            out_file = open(args.output, 'a')
         else:
             out_file = None
         sniff(filter='port 53', prn=scanner, store=0)
