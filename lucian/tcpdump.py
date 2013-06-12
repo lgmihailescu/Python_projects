@@ -33,7 +33,7 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,sname,szone,qtype)
 
-        if out_file:
+        if args.output:
             out_file.write('%s\n' % a.display_packet())
             out_file.flush()
             print a.display_packet()
