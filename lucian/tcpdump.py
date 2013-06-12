@@ -33,7 +33,7 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,sname,szone,qtype)
 
-        if args.output:
+        if out_file:
             out_file.write('%s\n' % a.display_packet())
             out_file.flush()
             print a.display_packet()
@@ -48,12 +48,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print >> sys.stderr, 'Capturing DNS requests..'
 
-    try:
-        if args.output:
+    if args.output:
             os.mkdir(args.output)
             out_file = open(os.path.join(out_dir, args.output,"testfile.log"), 'a')
         else:
             out_file = None
+
+    try:
         sniff(filter='port 53', prn=scanner, store=0)
     except KeyboardInterrupt:
         exit(0)
