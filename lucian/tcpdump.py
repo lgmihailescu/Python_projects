@@ -49,10 +49,10 @@ if __name__ == '__main__':
     print >> sys.stderr, 'Capturing DNS requests..'
 
     if args.output:
-            os.mkdir(args.output)
-            out_file = open(os.path.join(out_dir, args.output,"testfile.log"), 'a')
-        else:
-            out_file = None
+        os.mkdir(args.output)
+        out_file = open(os.path.join(out_dir, args.output,"testfile.log"), 'a')
+    else:
+        out_file = None
 
     try:
         sniff(filter='port 53', prn=scanner, store=0)
