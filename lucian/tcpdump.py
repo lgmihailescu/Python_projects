@@ -43,14 +43,15 @@ def scanner(pkt):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Capture DNS queries and output to specified directory')
-    parser.add_argument('--output', '-o', help='write dumps to folder')
+    parser.add_argument('--output', '-o', help='write dumps to specified folder')
 
     args = parser.parse_args()
     print >> sys.stderr, 'Capturing DNS requests..'
 
     if args.output:
         os.mkdir(args.output)
-        out_file = open(os.path.join(out_dir, args.output,"testfile.log"), 'a')
+        curr_dir = os.getcwd()
+        out_file = open(os.path.join(curr_dir, args.output,"testfile.log"), 'a')
     else:
         out_file = None
 
