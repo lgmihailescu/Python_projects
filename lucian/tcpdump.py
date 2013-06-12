@@ -9,15 +9,16 @@ import whois
 from scapy.all import *
 
 class Packet:
-    def __init__(self, time, ipdst, sname, szone, qtype):
+    def __init__(self, time, ipdst, port, sname, szone, qtype):
         self.time = str(time)
         self.ipdst = str(ipdst)
         self.sname = str(sname)
         self.szone = str(szone)
         self.qtype = str(qtype)
+        self.port = str(port)
         
     def display_packet(self):
-        return self.time + "    " + self.ipdst + "    " + self.sname + "    " + self.szone + "    " + self.qtype
+        return self.time + "    " + self.ipdst + "    " + self.port + "    " + self.sname + "    " + self.szone + "    " + self.qtype
            
 
 def scanner(pkt):
@@ -30,8 +31,9 @@ def scanner(pkt):
         szone=zone
         qtype=q.sprintf('%qtype%')
         ipdst=pkt.sprintf('%IP.dst%')
+        port=pkt.sprintf('%UDP.dport%')
 
-        a = Packet(timestamp,ipdst,sname,szone,qtype)
+        a = Packet(timestamp,ipdst,port,sname,szone,qtype)
 
         if out_file:
             out_file.write('%s\n' % a.display_packet())
