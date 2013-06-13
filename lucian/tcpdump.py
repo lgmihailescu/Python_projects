@@ -4,6 +4,7 @@ import os
 import datetime
 import argparse
 import whois
+import sys
 
 
 from scapy.all import *
