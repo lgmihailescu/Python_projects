@@ -36,12 +36,21 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
 
-        while a:
-            out_file = open(os.path.join(curr_dir, args.output, a.szone +"_testfile.log"), 'a')
-            out_file.write('%s\n' % a.display_packet())
-            out_file.flush()
-            print a.display_packet()
+        write_to_files(a.szone,a.szone + "_testout.log")
             
+            
+        print a.display_packet()    
+
+
+
+def write_to_files(fzone,output_file):
+    while fzone in output_file:
+        out_file = open(os.path.join(curr_dir, args.output, output_file), 'a')
+        out_file.write('%s\n' % a.display_packet())
+        out_file.flush()
+        out_file.close()
+
+                   
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Capture DNS queries and output to specified directory')
@@ -60,6 +69,4 @@ if __name__ == '__main__':
         sniff(filter='port 53', prn=scanner, store=0)
     except KeyboardInterrupt:
         exit(0)
-    finally:
-        if out_file:
-            out_file.close()
+        
