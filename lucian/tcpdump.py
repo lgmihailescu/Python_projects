@@ -36,17 +36,17 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
 
-        write_to_files(a.szone,a.szone + "_testout.log")
+        write_to_files(a.szone,a.szone + "_testout.log",a.display_packet())
             
             
         print a.display_packet()    
 
 
 
-def write_to_files(fzone,output_file):
+def write_to_files(fzone,output_file,line):
     while fzone in output_file:
         out_file = open(os.path.join(curr_dir, args.output, output_file), 'a')
-        out_file.write('%s\n' % a.display_packet())
+        out_file.write('%s\n' % line)
         out_file.flush()
         out_file.close()
 
