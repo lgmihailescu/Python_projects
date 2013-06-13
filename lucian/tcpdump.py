@@ -39,10 +39,6 @@ def scanner(pkt):
         write_to_files((a.szone).lower(), (a.szone + "_testout.log").lower(), a.display_packet())
             
             
-            
-
-
-
 def write_to_files(fzone,output_file,line):
     if fzone in output_file:
         out_file = open(os.path.join(curr_dir, args.output, output_file), 'a')
@@ -51,7 +47,6 @@ def write_to_files(fzone,output_file,line):
         out_file.close()
         print line
 
-                   
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Capture DNS queries and output to specified directory')
