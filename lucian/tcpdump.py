@@ -36,7 +36,7 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
 
-        while True:
+        while a:
             out_file = open(os.path.join(curr_dir, args.output, a.szone +"_testfile.log"), 'a')
             out_file.write('%s\n' % a.display_packet())
             out_file.flush()
@@ -53,7 +53,6 @@ if __name__ == '__main__':
     if args.output:
         os.mkdir(args.output)
         curr_dir = os.getcwd()
-        out_file = open(os.path.join(curr_dir, args.output,"testfile.log"), 'a')
     else:
         out_file = None
 
