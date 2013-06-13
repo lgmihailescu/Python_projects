@@ -39,7 +39,7 @@ def scanner(pkt):
         write_to_files(a.szone,a.szone + "_testout.log",a.display_packet())
             
             
-        print a.display_packet()    
+            
 
 
 
@@ -49,6 +49,7 @@ def write_to_files(fzone,output_file,line):
         out_file.write('%s\n' % line)
         out_file.flush()
         out_file.close()
+        print line
 
                    
 
