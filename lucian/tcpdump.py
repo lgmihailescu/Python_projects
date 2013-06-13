@@ -36,11 +36,10 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
 
-        if out_file:
+        for a.szone:
+            out_file = open(os.path.join(curr_dir, args.output, a.szone +"_testfile.log"), 'a')
             out_file.write('%s\n' % a.display_packet())
             out_file.flush()
-            print a.display_packet()
-        else:
             print a.display_packet()
             
 
