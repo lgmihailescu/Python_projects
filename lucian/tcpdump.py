@@ -36,7 +36,7 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
 
-        write_to_files(a.szone,a.szone + "_testout.log",a.display_packet())
+        write_to_files(lower(a.szone),lower(a.szone + "_testout.log"),a.display_packet())
             
             
             
@@ -44,7 +44,7 @@ def scanner(pkt):
 
 
 def write_to_files(fzone,output_file,line):
-    while fzone in output_file:
+    if fzone in output_file:
         out_file = open(os.path.join(curr_dir, args.output, output_file), 'a')
         out_file.write('%s\n' % line)
         out_file.flush()
