@@ -36,7 +36,7 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
 
-        write_to_files(lower(a.szone),lower(a.szone + "_testout.log"),a.display_packet())
+        write_to_files((a.szone).lower(), (a.szone + "_testout.log").lower, a.display_packet())
             
             
             
