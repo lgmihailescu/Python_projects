@@ -36,7 +36,7 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
 
-        for a.szone:
+        while True:
             out_file = open(os.path.join(curr_dir, args.output, a.szone +"_testfile.log"), 'a')
             out_file.write('%s\n' % a.display_packet())
             out_file.flush()
