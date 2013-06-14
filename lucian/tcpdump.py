@@ -47,6 +47,7 @@ def log(packet):
         log_files[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '.log'), 'a')
     log_files[packet.szone].write('%s\n' % packet.display_packet())
     log_files[packet.szone].flush()
+    os.fsync()
     print packet.display_packet()
     
 
@@ -76,12 +77,12 @@ if __name__ == '__main__':
     else:
         out_file = None
 
-    done = False
 
-    while not done:
-        try:
-            sniff(filter='port 53', prn=scanner, store=0)
-        except KeyboardInterrupt:
-            print "Something.........."
-            continue
+    try:
+        sniff(filter='port 53', prn=scanner, store=0)
+    except KeyboardInterrupt:
+        for logfile in log_files:
+            logfiles[logfile].close()
+            print "Closed %s" %logfile
+            
         
