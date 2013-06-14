@@ -43,7 +43,7 @@ whois_logs = {}
 
 def whois_query(ip):
     result = whois.query(ip)
-    return result[registrar]
+    return result.name
 
 
 def log(packet):
