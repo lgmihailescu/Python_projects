@@ -49,7 +49,7 @@ def log(packet):
     log_files[packet.szone].write('%s\n' % packet.display_packet())
     log_files[packet.szone].flush()
     print packet.display_packet()
-    print log_files
+    
 
 
 
