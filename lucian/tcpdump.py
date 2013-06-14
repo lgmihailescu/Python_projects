@@ -76,9 +76,12 @@ if __name__ == '__main__':
     else:
         out_file = None
 
-    try:
-        sniff(filter='port 53', prn=scanner, store=0)
-    except KeyboardInterrupt:
-        print "Something.........."
-        continue
+    done = False
+
+    while not done:
+        try:
+            sniff(filter='port 53', prn=scanner, store=0)
+        except KeyboardInterrupt:
+            print "Something.........."
+            continue
         
