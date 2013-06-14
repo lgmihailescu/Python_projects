@@ -47,7 +47,7 @@ def log(packet):
         log_files[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '.log'), 'a')
     log_files[packet.szone].write('%s\n' % packet.display_packet())
     log_files[packet.szone].flush()
-    os.fsync()
+    os.fsync(log_files[packet.szone])
     print packet.display_packet()
     
 
