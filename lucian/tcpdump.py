@@ -80,4 +80,5 @@ if __name__ == '__main__':
         sniff(filter='port 53', prn=scanner, store=0)
     except KeyboardInterrupt:
         print "Something.........."
+        continue
         
