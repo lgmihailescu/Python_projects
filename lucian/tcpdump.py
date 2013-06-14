@@ -39,13 +39,23 @@ def scanner(pkt):
 
             
 log_files = {}
+whois_logs = {}
+
+def whois_query(ip):
+    result = whois.query(ip)
+    return result.registrar
+
 
 def log(packet):
     if packet.szone not in log_files:
         log_files[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '.log'), 'a')
+        whois_logs[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '_WHOIS_.log'), 'a')
     log_files[packet.szone].write('%s\n' % packet.display_packet())
+    whois_logs[packet.szone].write('%s\n' % whois_query(packet.ipdst))
     log_files[packet.szone].flush()
+    whois_logs[packet.szone].flush()
     os.fsync(log_files[packet.szone].fileno())
+    os.fsync(whois_logs[packet.szone].fileno())
     print packet.display_packet()
     
 
@@ -72,5 +82,9 @@ if __name__ == '__main__':
         for logfile in log_files:
             log_files[logfile].close()
             print "Closed %s" % log_files[logfile].name
+        for whois_log in whois_logs:
+            whois_logs[whois_log].close()
+            print "Closed %s" % whois_logs[whois_log].name
+            
             
         
