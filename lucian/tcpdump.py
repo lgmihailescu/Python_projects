@@ -71,6 +71,6 @@ if __name__ == '__main__':
     finally:
         for logfile in log_files:
             log_files[logfile].close()
-            print "Closed %s" % logfile.name
+            print "Closed %s" % log_files[logfile].name
             
         
