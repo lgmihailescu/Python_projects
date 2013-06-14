@@ -51,12 +51,12 @@ def log(packet):
         log_files[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '.log'), 'a')
         whois_logs[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '_WHOIS_.log'), 'a')
     log_files[packet.szone].write('%s\n' % packet.display_packet())
-    x = str(whois_query(packet.ipdst))
-    whois_logs[packet.szone].write('%s\n' % x)
+    #x = str(whois_query(packet.ipdst))
+    #whois_logs[packet.szone].write('%s\n' % x)
     log_files[packet.szone].flush()
-    whois_logs[packet.szone].flush()
+    #whois_logs[packet.szone].flush()
     os.fsync(log_files[packet.szone].fileno())
-    os.fsync(whois_logs[packet.szone].fileno())
+    #os.fsync(whois_logs[packet.szone].fileno())
     print packet.display_packet()
     
 
