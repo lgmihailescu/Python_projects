@@ -35,17 +35,31 @@ def scanner(pkt):
         port=pkt.sprintf('%UDP.dport%')
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
+        log(a)
+        
+        #write_to_files((a.szone).lower(), (a.szone + "_testout.log").lower(), a.display_packet())
 
-        write_to_files((a.szone).lower(), (a.szone + "_testout.log").lower(), a.display_packet())
             
+log_files = {}
+
+def log(packet):
+    if packet.szone not in log_files:
+        log_files[packet.szone] = open(os.path.join(curr_dir, packet.szone + '.log'), 'a')
+    log_files[packet.szone].write(packet.display_packet())
+    log_files[packet.szone].flush()
+    print packet.display_packet()
+
+
+
+
             
-def write_to_files(fzone,output_file,line):
-    if fzone in output_file:
-        out_file = open(os.path.join(curr_dir, args.output, output_file), 'a')
-        out_file.write('%s\n' % line)
-        out_file.flush()
-        out_file.close()
-        print line
+#def write_to_files(fzone,output_file,line):
+#    if fzone in output_file:
+#        out_file = open(os.path.join(curr_dir, args.output, output_file), 'a')
+#        out_file.write('%s\n' % line)
+#        out_file.flush()
+#        out_file.close()
+#        print line
 
 
 if __name__ == '__main__':
