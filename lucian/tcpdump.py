@@ -4,7 +4,7 @@ import os
 import datetime
 import argparse
 import whois
-import sys
+import syss
 
 
 from scapy.all import *
@@ -36,8 +36,6 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
         log(a)
-        
-        #write_to_files((a.szone).lower(), (a.szone + "_testout.log").lower(), a.display_packet())
 
             
 log_files = {}
@@ -50,18 +48,6 @@ def log(packet):
     os.fsync(log_files[packet.szone].fileno())
     print packet.display_packet()
     
-
-
-
-
-            
-#def write_to_files(fzone,output_file,line):
-#    if fzone in output_file:
-#        out_file = open(os.path.join(curr_dir, args.output, output_file), 'a')
-#        out_file.write('%s\n' % line)
-#        out_file.flush()
-#        out_file.close()
-#        print line
 
 
 if __name__ == '__main__':
@@ -85,6 +71,6 @@ if __name__ == '__main__':
     finally:
         for logfile in log_files:
             log_files[logfile].close()
-            print "Closed %s" %logfile
+            print "Closed %s" % logfile.name
             
         
