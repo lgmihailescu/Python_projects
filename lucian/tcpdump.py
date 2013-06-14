@@ -79,5 +79,5 @@ if __name__ == '__main__':
     try:
         sniff(filter='port 53', prn=scanner, store=0)
     except KeyboardInterrupt:
-        exit(0)
+        print "Something.........."
         
