@@ -84,7 +84,7 @@ if __name__ == '__main__':
         exit(0)
     finally:
         for logfile in log_files:
-            logfiles[logfile].close()
+            log_files[logfile].close()
             print "Closed %s" %logfile
             
         
