@@ -45,7 +45,6 @@ log_files = {}
 def log(packet):
     if packet.szone not in log_files:
         log_files[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '.log'), 'a')
-        print log_files
     log_files[packet.szone].write('%s\n' % packet.display_packet())
     log_files[packet.szone].flush()
     print packet.display_packet()
