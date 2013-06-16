@@ -137,5 +137,5 @@ if __name__ == '__main__':
             whois_logs[whois_log].close()
             print "Closed %s" % whois_logs[whois_log].name
             
-     queue.join()
+    queue.join()
         
