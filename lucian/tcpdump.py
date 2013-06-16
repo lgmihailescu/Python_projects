@@ -21,16 +21,16 @@ whois_logs = {}
 from scapy.all import *
 
 class Packet:
-    def __init__(self, time, ipdst, port, sname, szone, qtype):
+    def __init__(self, time, ipsrc, port, sname, szone, qtype):
         self.time = str(time)
-        self.ipdst = str(ipdst)
+        self.ipsrc = str(ipsrc)
         self.sname = str(sname)
         self.szone = str(szone)
         self.qtype = str(qtype)
         self.port = str(port)
         
     def display_packet(self):
-        return self.time + "    " + self.ipdst + "    " + self.port + "    " + self.sname + "    " + self.szone + "    " + self.qtype
+        return self.time + "    " + self.ipsrc + "    " + self.port + "    " + self.sname + "    " + self.szone + "    " + self.qtype
 
 class Thread_Whois(threading.Thread):
     def __init__(self, queue):
@@ -71,10 +71,10 @@ def scanner(pkt):
         sname=name or '@'
         szone=zone
         qtype=q.sprintf('%qtype%')
-        ipdst=pkt.sprintf('%IP.dst%')
+        ipsrc=pkt.sprintf('%IP.src%')
         port=pkt.sprintf('%UDP.dport%')
 
-        a = Packet(timestamp,ipdst,port,sname,szone,qtype)
+        a = Packet(timestamp,ipsrc,port,sname,szone,qtype)
         
         log(a)
         whois_log(a)
@@ -87,9 +87,9 @@ def whois_query(ip):
 
 
 def whois_log(packet):
-    if packet.ipdst not in whois_logs:
-        whois_logs[packet.ipdst] = open(os.path.join(curr_dir, args.output, "WHOIS", packet.ipdst + '.log'), 'a')
-        queue.put(packet.ipdst)
+    if packet.ipsrc not in whois_logs:
+        whois_logs[packet.ipsrc] = open(os.path.join(curr_dir, args.output, "WHOIS", packet.ipsrc + '.log'), 'a')
+        queue.put(packet.ipsrc)
         
 
 def log(packet):
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
 
     try:
-        sniff(filter='src port 53', prn=scanner, store=0)
+        sniff(filter='udp src port 53', prn=scanner, store=0)
     except KeyboardInterrupt:
         exit(0)
     finally:
