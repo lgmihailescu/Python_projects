@@ -8,6 +8,7 @@ import sys
 import Queue
 import threading
 import time
+import socket
 
 queue = Queue.Queue()
            
@@ -43,7 +44,8 @@ class Thread_Whois(threading.Thread):
             target = self.queue.get()
             
             #WHOIS execution
-            response = whois_query(target)
+            response = whois_query(socket.gethostbyaddr(target)[0])
+            
             out = open(os.path.join(curr_dir, args.output, "WHOIS", target + '.log'), 'a')
             out.write('%s\n' % response)
             out.flush()
