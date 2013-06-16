@@ -49,7 +49,7 @@ class Thread_Whois(threading.Thread):
             except socket.herror:
                 x = 'No results returned'
                 
-            response = whois_query(x)
+            response = whois_query(x[0])
             
             out = open(os.path.join(curr_dir, args.output, "WHOIS", target + '.log'), 'a')
             out.write('%s\n' % response)
@@ -137,5 +137,5 @@ if __name__ == '__main__':
             whois_logs[whois_log].close()
             print "Closed %s" % whois_logs[whois_log].name
             
-            
+     queue.join()
         
