@@ -105,7 +105,7 @@ if __name__ == '__main__':
     if args.output:
         os.mkdir(args.output)
         
-        if not os.path.exists(directory):
+        if not os.path.exists(os.path.join(args.output,"WHOIS"):
             os.mkdir(os.path.join(args.output,"WHOIS"))
             
         curr_dir = os.getcwd()
