@@ -5,6 +5,16 @@ import datetime
 import argparse
 import whois
 import sys
+import Queue
+import threading
+import time
+
+queue = Queue.Queue()
+           
+log_files = {}
+whois_logs = {}
+
+#response = ""
 
 
 from scapy.all import *
@@ -20,7 +30,30 @@ class Packet:
         
     def display_packet(self):
         return self.time + "    " + self.ipdst + "    " + self.port + "    " + self.sname + "    " + self.szone + "    " + self.qtype
-           
+
+class Thread_Whois(threading.Thread):
+    def __init__(self, queue):
+        threading.Thread.__init__(self)
+        self.queue = queue
+          
+    def run(self,packet):
+        while True:
+            
+            #grabs IP from queue
+            target = self.queue.get()
+            
+            #WHOIS execution
+            response = whois_query(target)
+            out = open(os.path.join(curr_dir, args.output, "WHOIS", target + '.log'), 'a')
+            out.write('%s\n' % response)
+            out.flush()
+            os.fsync(out.fileno())
+            
+            
+            #signals to queue job is done
+            self.queue.task_done()
+            time.sleep(5)
+
 
 def scanner(pkt):
     if pkt.haslayer(DNSQR):
@@ -35,28 +68,29 @@ def scanner(pkt):
         port=pkt.sprintf('%UDP.dport%')
 
         a = Packet(timestamp,ipdst,port,sname,szone,qtype)
+        
         log(a)
+        whois_log(a)
 
-            
-log_files = {}
-whois_logs = {}
+
 
 def whois_query(ip):
     result = whois.query(ip)
     return result.name
 
 
+def whois_log(packet):
+    if packet.ipdst not in whois_logs:
+        whois_logs[packet.ipdst] = open(os.path.join(curr_dir, args.output, "WHOIS", packet.ipdst + '.log'), 'a')
+        queue.put(packet.ipdst)
+        
+
 def log(packet):
     if packet.szone not in log_files:
         log_files[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '.log'), 'a')
-        whois_logs[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '_WHOIS_.log'), 'a')
     log_files[packet.szone].write('%s\n' % packet.display_packet())
-    #x = str(whois_query(packet.ipdst))
-    #whois_logs[packet.szone].write('%s\n' % x)
     log_files[packet.szone].flush()
-    #whois_logs[packet.szone].flush()
     os.fsync(log_files[packet.szone].fileno())
-    #os.fsync(whois_logs[packet.szone].fileno())
     print packet.display_packet()
     
 
@@ -70,9 +104,18 @@ if __name__ == '__main__':
 
     if args.output:
         os.mkdir(args.output)
+        
+        if not os.path.exists(directory):
+            os.mkdir(os.path.join(args.output,"WHOIS"))
+            
         curr_dir = os.getcwd()
     else:
         out_file = None
+
+
+    t = Thread_Whois(queue)
+    t.setDaemon(True)
+    t.start()
 
 
     try:
