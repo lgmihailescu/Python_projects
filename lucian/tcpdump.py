@@ -36,7 +36,7 @@ class Thread_Whois(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue
           
-    def run(self,packet):
+    def run(self):
         while True:
             
             #grabs IP from queue
