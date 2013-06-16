@@ -44,7 +44,12 @@ class Thread_Whois(threading.Thread):
             target = self.queue.get()
             
             #WHOIS execution
-            response = whois_query(socket.gethostbyaddr(target)[0])
+            try:
+                x = socket.gethostbyaddr(target)
+            except socket.herror:
+                x = 'No results returned'
+                
+            response = whois_query(x)
             
             out = open(os.path.join(curr_dir, args.output, "WHOIS", target + '.log'), 'a')
             out.write('%s\n' % response)
@@ -121,7 +126,7 @@ if __name__ == '__main__':
 
 
     try:
-        sniff(filter='dst port 53', prn=scanner, store=0)
+        sniff(filter='src port 53', prn=scanner, store=0)
     except KeyboardInterrupt:
         exit(0)
     finally:
