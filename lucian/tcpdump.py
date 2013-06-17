@@ -82,8 +82,11 @@ def scanner(pkt):
 
 
 def whois_query(ip):
-    result = whois.query(ip)
-    return result.name
+    try:
+        result = whois.query(ip)
+        return result.name
+    except:
+        return "ERROR"
 
 
 def whois_log(packet):
