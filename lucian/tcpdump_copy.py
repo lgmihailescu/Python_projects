@@ -9,19 +9,16 @@ import Queue
 import threading
 import time
 import socket
-from scapy.all import *
 
 queue = Queue.Queue()
            
 log_files = {}
 whois_logs = {}
 
-list_by_zones = []
-list_by_IP = []
+#response = ""
 
 
-
-
+from scapy.all import *
 
 class Packet:
     def __init__(self, time, ipsrc, port, sname, szone, qtype):
@@ -78,13 +75,6 @@ def scanner(pkt):
         port=pkt.sprintf('%UDP.dport%')
 
         a = Packet(timestamp,ipsrc,port,sname,szone,qtype)
-
-        for a.szone:
-            list_by_zones.append(list(a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)))
-
-        for a.ipsrc:
-            list_by_IP.append(list(a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)))
-
         
         log(a)
         whois_log(a)
@@ -149,9 +139,6 @@ if __name__ == '__main__':
         for whois_log in whois_logs:
             whois_logs[whois_log].close()
             print "Closed %s" % whois_logs[whois_log].name
-        print list_by_zones
-        print list_by_IP
-        
             
     queue.join()
         
