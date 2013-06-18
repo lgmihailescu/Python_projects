@@ -82,10 +82,10 @@ class Thread_aggregate_zone(threading.Thread):
         zlist = defaultdict(list)
  
         while True:
-            while not queue.qsize() == 0:
+            while queue.qsize() > 0:
                 #grabs list from queue
                 list_zones.append(self.queue.get())
-                print list_zones.items()
+            print list_zones.items()
             
             
             # execution
@@ -95,7 +95,7 @@ class Thread_aggregate_zone(threading.Thread):
             print zlist.items()               
             #signals to queue job is done
             #self.queue.task_done()
-            time.sleep(10)
+            time.sleep(20)
 
 
 
