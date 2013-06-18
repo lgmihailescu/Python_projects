@@ -93,7 +93,7 @@ class Thread_aggregate_zone(threading.Thread):
                
             #signals to queue job is done
                 self.queue.task_done()
-            queue.join()
+                queue.join()
             print zlist.items()
             time.sleep(10)
 
