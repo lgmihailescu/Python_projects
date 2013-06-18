@@ -80,9 +80,9 @@ def scanner(pkt):
         a = Packet(timestamp,ipsrc,port,sname,szone,qtype)
 
         
-        list_by_zones.append(list(a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)))
+        list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
 
-        list_by_IP.append(list(a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)))
+        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
 
         
         log(a)
