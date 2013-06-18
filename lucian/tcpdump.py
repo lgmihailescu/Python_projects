@@ -23,8 +23,8 @@ whois_logs = {}
 zone_queue = Queue.Queue()
 IP_queue = Queue.Queue()
 
-#list_by_zones = []
-#list_by_IP = []
+list_by_zones = []
+list_by_IP = []
 
 
 
@@ -82,9 +82,9 @@ class Thread_aggregate_zone(threading.Thread):
         zlist = defaultdict(list)
  
         while True:
-            while queue.qsize() > 0:
+            while True:
                 #grabs list from queue
-                list_zones.append(self.queue.get())
+                list_zones.append(list_by_zones.pop())
             print list_zones
             
             
@@ -116,8 +116,8 @@ def scanner(pkt):
         a = Packet(timestamp,ipsrc,port,sname,szone,qtype)
 
         
-        #list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
-        #list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
+        list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
+        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
 
         
         log(a)
