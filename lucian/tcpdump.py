@@ -174,11 +174,6 @@ if __name__ == '__main__':
     t = Thread_Whois(queue)
     t.setDaemon(True)
     t.start()
-
-
-    m = Thread_aggregate_zone(zone_queue)
-    m.setDaemon(True)
-    m.start()
     
 
 
@@ -195,6 +190,11 @@ if __name__ == '__main__':
             print "Closed %s" % whois_logs[whois_log].name
         #print list_by_zones
         #print list_by_IP
+
+    m = Thread_aggregate_zone(zone_queue)
+    m.setDaemon(True)
+    m.start()
+    
         
             
     #queue.join()
