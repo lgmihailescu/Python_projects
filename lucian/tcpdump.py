@@ -84,15 +84,15 @@ class Thread_aggregate_zone(threading.Thread):
         while True:
             while len(list_by_zones) > 0:
                 #grabs list from queue
-                list_zones.append(list_by_zones.pop())
-            print list_zones
+                list_zones.append(list_by_zones.popleft())
+            #print list_zones
             
             
             # execution
             for a, b in list_zones:
                 zlist[a].append(b)
 
-            print zlist              
+            print zlist.items()              
             #signals to queue job is done
             #self.queue.task_done()
             time.sleep(20)
