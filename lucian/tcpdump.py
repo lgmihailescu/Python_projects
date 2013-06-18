@@ -71,6 +71,7 @@ class Thread_Whois(threading.Thread):
             self.queue.task_done()
             time.sleep(5)
 
+
 class Thread_aggregate_zone(threading.Thread):
     def __init__(self, queue):
         threading.Thread.__init__(self)
@@ -81,9 +82,10 @@ class Thread_aggregate_zone(threading.Thread):
         zlist = defaultdict(list)
  
         while True:
-            while not queue.empty():
+            while queue.not_empty():
                 #grabs list from queue
                 list_zones.append(self.queue.get())
+                print list_zones.items()
             
             
             # execution
