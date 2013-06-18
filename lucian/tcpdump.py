@@ -80,9 +80,10 @@ class Thread_aggregate_zone(threading.Thread):
     def run(self):
         list_zones = []
         while True:
-            While not queue.empty():
-                #grabs list from queue
-                list_zones.append(self.queue.get())
+            while True:
+                if not queue.empty():
+                    #grabs list from queue
+                    list_zones.append(self.queue.get())
             
             #WHOIS execution
             try:
