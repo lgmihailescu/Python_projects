@@ -117,10 +117,6 @@ def scanner(pkt):
         #list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
         #list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
 
-
-        zone_queue.put([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
-        IP_queue.put([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
-
         
         log(a)
         whois_log(a)
@@ -147,6 +143,10 @@ def log(packet):
     log_files[packet.szone].write('%s\n' % packet.display_packet())
     log_files[packet.szone].flush()
     os.fsync(log_files[packet.szone].fileno())
+    
+    zone_queue.put([packet.szone,dict(timestamp=packet.time, ip=packet.ipsrc, query=packet.qtype)])
+    IP_queue.put([packet.ipsrc,dict(timestamp=packet.time, ip=packet.ipsrc)])
+    
     print packet.display_packet()
     
 
