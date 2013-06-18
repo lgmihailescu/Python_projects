@@ -9,6 +9,9 @@ import Queue
 import threading
 import time
 import socket
+import operator
+import itertools
+from collections import defaultdict
 from scapy.all import *
 
 queue = Queue.Queue()
@@ -16,8 +19,12 @@ queue = Queue.Queue()
 log_files = {}
 whois_logs = {}
 
-list_by_zones = []
-list_by_IP = []
+
+zone_queue = Queue.Queue()
+IP_queue = Queue.Queue()
+
+#list_by_zones = []
+#list_by_IP = []
 
 
 
@@ -62,7 +69,35 @@ class Thread_Whois(threading.Thread):
             
             #signals to queue job is done
             self.queue.task_done()
+            queue.join()
             time.sleep(5)
+
+class Thread_aggregate_zone(threading.Thread):
+    def __init__(self, queue):
+        threading.Thread.__init__(self)
+        self.queue = queue
+          
+    def run(self):
+        list_zones = []
+        While True:
+            While not queue.empty():
+                #grabs list from queue
+                list_zones.append(self.queue.get())
+            
+            #WHOIS execution
+            try:
+                zlist = defaultdict(list)
+                for a, b in list_zones:
+                    zlist[a].append(b)
+            print zlist   
+            #signals to queue job is done
+            self.queue.task_done()
+            queue.join()
+            
+            time.sleep(10)
+
+
+
 
 
 def scanner(pkt):
@@ -80,9 +115,12 @@ def scanner(pkt):
         a = Packet(timestamp,ipsrc,port,sname,szone,qtype)
 
         
-        list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
+        #list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
+        #list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
 
-        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
+
+        zone_queue.put([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
+        IP_queue.put([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
 
         
         log(a)
@@ -137,6 +175,12 @@ if __name__ == '__main__':
     t.start()
 
 
+    m = Thread_aggregate_zone(zone_queue)
+    m.setDaemon(True)
+    m.start()
+    
+
+
     try:
         sniff(filter='udp src port 53', prn=scanner, store=0)
     except KeyboardInterrupt:
@@ -148,9 +192,9 @@ if __name__ == '__main__':
         for whois_log in whois_logs:
             whois_logs[whois_log].close()
             print "Closed %s" % whois_logs[whois_log].name
-        print list_by_zones
-        print list_by_IP
+        #print list_by_zones
+        #print list_by_IP
         
             
-    queue.join()
+    #queue.join()
         
