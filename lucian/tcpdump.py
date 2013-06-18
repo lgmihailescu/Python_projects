@@ -69,7 +69,6 @@ class Thread_Whois(threading.Thread):
             
             #signals to queue job is done
             self.queue.task_done()
-            #queue.join()
             time.sleep(5)
 
 class Thread_aggregate_zone(threading.Thread):
@@ -87,17 +86,13 @@ class Thread_aggregate_zone(threading.Thread):
                 list_zones.append(self.queue.get())
             
             # execution
-            try:
-                for a, b in list_zones:
-                    zlist[a].append(b)
-            except:
-                zlist = []
-            finally:
-                print zlist.items()               
-                #signals to queue job is done
-                #queue.join()
-                self.queue.task_done()
-                time.sleep(10)
+            for a, b in list_zones:
+                zlist[a].append(b)
+
+            print zlist.items()               
+            #signals to queue job is done
+            self.queue.task_done()
+            time.sleep(10)
 
 
 
