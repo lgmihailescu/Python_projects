@@ -77,10 +77,11 @@ class Thread_aggregate_zone(threading.Thread):
         self.queue = queue
           
     def run(self):
+        list_zones = list()
+        zlist = defaultdict(list)
  
         while True:
-            list_zones = []
-            zlist = defaultdict(list)
+ 
 
             while True:
                 if not queue.empty():
