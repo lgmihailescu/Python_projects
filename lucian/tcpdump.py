@@ -95,7 +95,7 @@ class Thread_aggregate_zone(threading.Thread):
                 self.queue.task_done()
                 queue.join()
                 print zlist.items()
-            time.sleep(10)
+                time.sleep(10)
 
 
 
