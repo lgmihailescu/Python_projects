@@ -79,7 +79,7 @@ class Thread_aggregate_zone(threading.Thread):
           
     def run(self):
         list_zones = []
-        While True:
+        while True:
             While not queue.empty():
                 #grabs list from queue
                 list_zones.append(self.queue.get())
