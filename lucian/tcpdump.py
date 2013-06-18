@@ -81,13 +81,10 @@ class Thread_aggregate_zone(threading.Thread):
         zlist = defaultdict(list)
  
         while True:
- 
-
-            while True:
-                if not queue.empty():
-                    #grabs list from queue
-                    list_zones.append(self.queue.get())
-                break
+            while not queue.empty():
+                #grabs list from queue
+                list_zones.append(self.queue.get())
+            
             
             # execution
             for a, b in list_zones:
