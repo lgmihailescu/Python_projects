@@ -85,16 +85,20 @@ class Thread_aggregate_zone(threading.Thread):
                 if not queue.empty():
                     #grabs list from queue
                     list_zones.append(self.queue.get())
+            except:
+                print "error"
             
             # execution
             try:
                 for a, b in list_zones:
                     zlist[a].append(b)
+            except:
+                zlist = []
                
             #signals to queue job is done
             self.queue.task_done()
             queue.join()
-            #print zlist.items()
+            print zlist.items()
             time.sleep(10)
 
 
