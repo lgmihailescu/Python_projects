@@ -79,6 +79,7 @@ class Thread_aggregate_zone(threading.Thread):
           
     def run(self):
         list_zones = []
+        zlist = defaultdict(list)
         while True:
             while True:
                 if not queue.empty():
@@ -87,7 +88,6 @@ class Thread_aggregate_zone(threading.Thread):
             
             #WHOIS execution
             try:
-                zlist = defaultdict(list)
                 for a, b in list_zones:
                     zlist[a].append(b)
             print zlist   
