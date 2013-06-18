@@ -86,6 +86,7 @@ class Thread_aggregate_zone(threading.Thread):
                 if not queue.empty():
                     #grabs list from queue
                     list_zones.append(self.queue.get())
+                break
             
             # execution
             for a, b in list_zones:
