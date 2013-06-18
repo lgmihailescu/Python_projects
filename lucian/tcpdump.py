@@ -94,9 +94,10 @@ class Thread_aggregate_zone(threading.Thread):
                     zlist[a].append(b)
             except:
                 zlist = []
-            print zlist.items()               
-            #signals to queue job is done
-            #queue.join()
+            finally:
+                print zlist.items()               
+                #signals to queue job is done
+                #queue.join()
                 self.queue.task_done()
             time.sleep(10)
 
