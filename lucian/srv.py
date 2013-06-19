@@ -8,12 +8,9 @@ app = Flask(__name__)
 app.debug = True
 
 
-
-
-
 @app.route('/')
 def hello():
-    print "Hello World!"
+    return "Hello World!"
 
 @app.route('/zone/<zone_id>/dns',methods=['POST'])
 def rqdata():
