@@ -202,7 +202,9 @@ class App():
             if __name__ == '__main__':
                 parser = argparse.ArgumentParser(description='Capture DNS queries and output to specified directory')
                 parser.add_argument('--output', '-o', help='write dumps to specified folder')
-                parser.add_argument('start','stop','restart')
+                parser.add_argument('start')
+                parser.add_argument('stop')
+                parser.add_argument('restart')
                 args = parser.parse_args()
                 print >> sys.stderr, 'Capturing DNS requests..'
 
