@@ -21,10 +21,6 @@ queue = Queue.Queue()
 log_files = {}
 whois_logs = {}
 
-
-zone_queue = Queue.Queue()
-IP_queue = Queue.Queue()
-
 list_by_zones = []
 list_by_IP = []
 
@@ -75,9 +71,8 @@ class Thread_Whois(threading.Thread):
 
 
 class Thread_aggregate_zone(threading.Thread):
-    def __init__(self, queue):
+    def __init__(self):
         threading.Thread.__init__(self)
-        self.queue = queue
           
     def run(self):
         list_zones = list()
@@ -86,7 +81,7 @@ class Thread_aggregate_zone(threading.Thread):
             zlist = defaultdict(list)
             
             while len(list_by_zones) > 0:
-                #grabs list from queue
+                #grabs list from zones list
                 list_zones.append(list_by_zones.pop())
             #print list_zones
             
@@ -155,9 +150,6 @@ def log(packet):
     log_files[packet.szone].flush()
     os.fsync(log_files[packet.szone].fileno())
     
-    zone_queue.put([packet.szone,dict(timestamp=packet.time, ip=packet.ipsrc, query=packet.qtype)])
-    IP_queue.put([packet.ipsrc,dict(timestamp=packet.time, ip=packet.ipsrc)])
-    
     print packet.display_packet()
     
 
@@ -207,4 +199,4 @@ if __name__ == '__main__':
         
             
     queue.join()
-    zone_queue.join()        
+          
