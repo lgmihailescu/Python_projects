@@ -96,7 +96,9 @@ class Thread_aggregate_zone(threading.Thread):
                 zlist[a].append(b)
             if len(zlist) > 0:
                 for item in zlist:
-                    r = requests.post("http://192.168.0.14:5000/zone/"+ item[0] + "/dns", data=item[1])
+                    zn = str(item[0])
+                    payload = item[1]
+                    r = requests.post("http://192.168.0.14:5000/zone/"+ zn + "/dns", data=payload)
                 #print zlist.items()
                 list_zones[:] = []
                 #zlist[:] = []
