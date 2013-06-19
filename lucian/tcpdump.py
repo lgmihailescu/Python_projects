@@ -93,8 +93,8 @@ class Thread_aggregate_zone(threading.Thread):
                 zlist[a].append(b)
             if len(zlist) > 0:
                 print zlist.items()
-                del list_zones[:]
-                del zlist[:]
+                list_zones[:] = []
+                zlist[:] = []
             time.sleep(10)
 
 
