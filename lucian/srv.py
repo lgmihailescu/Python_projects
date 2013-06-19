@@ -14,7 +14,7 @@ def hello():
     return "Hello"
 
 @app.route('/zone/<zone_id>/dns',methods=['POST'])
-def rqdata():
+def rqdata(zone_id):
     print zone_id
     return zone_id
 
