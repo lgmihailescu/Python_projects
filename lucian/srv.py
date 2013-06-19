@@ -15,7 +15,7 @@ app.debug = True
 def hello():
     print "Hello World!"
 
-@app.route('/zone/<str:zone_id>/dns',methods=['POST'])
+@app.route('/zone/<zone_id>/dns',methods=['POST'])
 def rqdata():
     print zone_id + " : " + request.data
 
