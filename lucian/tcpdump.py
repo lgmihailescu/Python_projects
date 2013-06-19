@@ -79,9 +79,10 @@ class Thread_aggregate_zone(threading.Thread):
           
     def run(self):
         list_zones = list()
-        zlist = defaultdict(list)
- 
+         
         while True:
+            zlist = defaultdict(list)
+            
             while len(list_by_zones) > 0:
                 #grabs list from queue
                 list_zones.append(list_by_zones.pop())
@@ -94,7 +95,7 @@ class Thread_aggregate_zone(threading.Thread):
             if len(zlist) > 0:
                 print zlist.items()
                 list_zones[:] = []
-                zlist[:] = []
+                #zlist[:] = []
             time.sleep(10)
 
 
