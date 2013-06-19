@@ -98,7 +98,7 @@ class Thread_aggregate_zone(threading.Thread):
                 for item in zlist:
                     #zn = 
                     #payload = 
-                    print item
+                    print item.items()
                     
                     #url = "http://192.168.0.14:5000/zone/" + zn + "/dns/"
                     #r = requests.post(url , data=payload)
