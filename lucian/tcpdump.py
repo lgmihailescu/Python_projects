@@ -27,9 +27,6 @@ list_by_zones = []
 list_by_IP = []
 
 
-
-
-
 class Packet:
     def __init__(self, time, ipsrc, port, sname, szone, qtype):
         self.time = str(time)
