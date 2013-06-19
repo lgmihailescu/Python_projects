@@ -13,6 +13,8 @@ import operator
 import itertools
 from collections import defaultdict
 from scapy.all import *
+import requests
+
 
 queue = Queue.Queue()
            
