@@ -176,7 +176,7 @@ if __name__ == '__main__':
     t.setDaemon(True)
     t.start()
     
-    m = Thread_aggregate_zone(zone_queue)
+    m = Thread_aggregate_zone()
     m.setDaemon(True)
     m.start()
 
