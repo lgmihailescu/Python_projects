@@ -15,6 +15,7 @@ from collections import defaultdict
 from scapy.all import *
 import requests
 import json
+from daemon import runner
 
 
 queue = Queue.Queue()
@@ -150,13 +151,21 @@ def scanner(pkt):
 
         a = Packet(timestamp,ipsrc,port,sname,szone,qtype)
 
-        
-        list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
-        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
-
-        
         log(a)
         whois_log(a)
+        
+        list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
+
+        try:
+            ptrecord = socket.gethostbyaddr(target)
+        except socket.herror:
+            ptrecord = 'No results returned'
+        
+        
+        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc, who=,ptr=ptrecord)])
+
+        
+        
 
 
 
@@ -183,53 +192,64 @@ def log(packet):
     
     print packet.display_packet()
     
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Capture DNS queries and output to specified directory')
-    parser.add_argument('--output', '-o', help='write dumps to specified folder')
-
-    args = parser.parse_args()
-    print >> sys.stderr, 'Capturing DNS requests..'
-
-    if args.output:
-        os.mkdir(args.output)
-        
-        if not os.path.exists(os.path.join(args.output,"WHOIS")):
-                              os.mkdir(os.path.join(args.output,"WHOIS"))
+class App():
+    def __init__(self):
+        self.stdin_path = '/dev/null'
+        self.stdout_path = '/dev/tty'
+        self.stderr_path = '/dev/tty'
+        self.pidfile_path =  '/tmp/foo.pid'
+        self.pidfile_timeout = 5
+    def run(self):
+        while True:
             
-        curr_dir = os.getcwd()
-    else:
-        out_file = None
+            if __name__ == '__main__':
+                parser = argparse.ArgumentParser(description='Capture DNS queries and output to specified directory')
+                parser.add_argument('--output', '-o', help='write dumps to specified folder')
+
+                args = parser.parse_args()
+                print >> sys.stderr, 'Capturing DNS requests..'
+
+                if args.output:
+                    os.mkdir(args.output)
+                    
+                    if not os.path.exists(os.path.join(args.output,"WHOIS")):
+                                          os.mkdir(os.path.join(args.output,"WHOIS"))
+                        
+                    curr_dir = os.getcwd()
+                else:
+                    out_file = None
 
 
-    t = Thread_Whois(queue)
-    t.setDaemon(True)
-    t.start()
-    
-    m = Thread_aggregate_zone()
-    m.setDaemon(True)
-    m.start()
+                t = Thread_Whois(queue)
+                t.setDaemon(True)
+                t.start()
+                
+                m = Thread_aggregate_zone()
+                m.setDaemon(True)
+                m.start()
 
-    n = Thread_aggregate_IP()
-    n.setDaemon(True)
-    n.start()
-    
+                n = Thread_aggregate_IP()
+                n.setDaemon(True)
+                n.start()
+                
 
-    try:
-        sniff(filter='udp src port 53', prn=scanner, store=0)
-    except KeyboardInterrupt:
-        exit(0)
-    finally:
-        for logfile in log_files:
-            log_files[logfile].close()
-            print "Closed %s" % log_files[logfile].name
-        for whois_log in whois_logs:
-            whois_logs[whois_log].close()
-            print "Closed %s" % whois_logs[whois_log].name
-        #print list_by_zones
-        #print list_by_IP
+                try:
+                    sniff(filter='udp src port 53', prn=scanner, store=0)
+                except KeyboardInterrupt:
+                    exit(0)
+                finally:
+                    for logfile in log_files:
+                        log_files[logfile].close()
+                        print "Closed %s" % log_files[logfile].name
+                    for whois_log in whois_logs:
+                        whois_logs[whois_log].close()
+                        print "Closed %s" % whois_logs[whois_log].name
+                    #print list_by_zones
+                    #print list_by_IP
 
-             
-    queue.join()
+                         
+                queue.join()
           
+app = App()
+daemon_runner = runner.DaemonRunner(app)
+daemon_runner.do_action()
