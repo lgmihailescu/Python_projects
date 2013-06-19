@@ -95,13 +95,43 @@ class Thread_aggregate_zone(threading.Thread):
                     payload = item[1]
                     
                     url = "http://192.168.0.14:5000/zone/" + zn + "/dns/"
-                    r = requests.post(url)
-                #print zlist.items()
+                    r = requests.post(url, data="test")
+                
                 list_zones[:] = []
-                #zlist[:] = []
+                
             time.sleep(10)
 
 
+class Thread_aggregate_IP(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+          
+    def run(self):
+        list_IPs = list()
+         
+        while True:
+            IPlist = defaultdict(list)
+            
+            while len(list_by_IP) > 0:
+                #grabs list from IP list
+                list_IPs.append(list_by_IP.pop())
+            #print list_zones
+            
+            
+            # execution
+            for a, b in list_IPs:
+                IPlist[a].append(b)
+            if len(IPlist) > 0:
+                for item in IPlist.items():
+                    IP = item[0]
+                    payload = item[1]
+                    
+                    url = "http://192.168.0.14:5000/ips/" + IP + "/dns/"
+                    r = requests.post(url, data="test")
+                
+                list_IPs[:] = []
+                
+            time.sleep(10)
 
 
 
@@ -180,6 +210,11 @@ if __name__ == '__main__':
     m.setDaemon(True)
     m.start()
 
+    n = Thread_aggregate_IP()
+    n.setDaemon(True)
+    n.start()
+    
+
     try:
         sniff(filter='udp src port 53', prn=scanner, store=0)
     except KeyboardInterrupt:
@@ -194,9 +229,6 @@ if __name__ == '__main__':
         #print list_by_zones
         #print list_by_IP
 
-   
-    
-        
-            
+             
     queue.join()
           
