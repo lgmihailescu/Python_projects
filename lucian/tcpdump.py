@@ -162,7 +162,7 @@ def scanner(pkt):
             ptrecord = 'No results returned'
         
         
-        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc, who=,ptr=ptrecord)])
+        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc, who="test",ptr="test")])
 
         
         
