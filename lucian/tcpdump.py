@@ -93,7 +93,7 @@ class Thread_aggregate_zone(threading.Thread):
                 zlist[a].append(b)
 
             print zlist.items()              
-            zlist = []   
+            #zlist = []   
             time.sleep(20)
 
 
