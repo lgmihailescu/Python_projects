@@ -14,6 +14,7 @@ import itertools
 from collections import defaultdict
 from scapy.all import *
 import requests
+import json
 
 
 queue = Queue.Queue()
@@ -95,7 +96,7 @@ class Thread_aggregate_zone(threading.Thread):
                     payload = item[1]
                     
                     url = "http://192.168.0.14:5000/zone/" + zn + "/dns/"
-                    r = requests.post(url, data="test")
+                    r = requests.post(url, data=json.dumps(payload))
                 
                 list_zones[:] = []
                 
@@ -127,7 +128,7 @@ class Thread_aggregate_IP(threading.Thread):
                     payload = item[1]
                     
                     url = "http://192.168.0.14:5000/ips/" + IP + "/dns/"
-                    r = requests.post(url, data="test")
+                    r = requests.post(url, data=json.dumps(payload))
                 
                 list_IPs[:] = []
                 
