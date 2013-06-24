@@ -22,6 +22,7 @@ config = ConfigParser.ConfigParser()
 
 config.read("config.ini")
 
+curr_dir = os.getcwd()
 
 
 queue = Queue.Queue()
@@ -218,7 +219,6 @@ class App():
                     if not os.path.exists(os.path.join(destination,whois_destination)):
                                           os.mkdir(os.path.join(destination,whois_destination))
                         
-                    curr_dir = os.getcwd()
 
 
 
