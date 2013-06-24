@@ -181,15 +181,6 @@ def scanner(pkt):
 
         
         
-        #list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
-
-        #IPQueue.put(a.ipsrc)
-
-        
-        
-
-
-
 def whois_query(address):
     try:
         result = whois.query(str(address))
@@ -251,8 +242,7 @@ class App():
                     for whois_log in whois_logs:
                         whois_logs[whois_log].close()
                         print "Closed %s" % whois_logs[whois_log].name
-                    #print list_by_zones
-                    #print list_by_IP
+   
 
                          
                 queue.join()
