@@ -19,6 +19,9 @@ from daemon import runner
 
 
 queue = Queue.Queue()
+
+IPQueue = Queue.Queue()
+
            
 log_files = {}
 whois_logs = {}
@@ -159,7 +162,7 @@ def scanner(pkt):
             ptrecord = 'No results returned'
         
         
-        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc, who="test",ptr="test")])
+        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
 
         
         
