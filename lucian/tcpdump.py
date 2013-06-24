@@ -175,10 +175,6 @@ def scanner(pkt):
         
         list_by_zones.append([a.szone,dict(timestamp=a.time, ip=a.ipsrc, query=a.qtype)])
 
-        try:
-            ptrecord = socket.gethostbyaddr(target)
-        except socket.herror:
-            ptrecord = 'No results returned'
         
         
         list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
