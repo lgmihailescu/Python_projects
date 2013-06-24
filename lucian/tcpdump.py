@@ -155,7 +155,7 @@ class Thread_aggregate_IP(threading.Thread):
                     r = requests.post(url, data=json.dumps(payload))
                 
                 list_IPs[:] = []
-            #self.queue.task_done()                
+            self.queue.task_done()                
             time.sleep(10)
 
 
