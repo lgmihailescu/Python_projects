@@ -24,6 +24,18 @@ config.read("config.ini")
 
 curr_dir = os.getcwd()
 
+if config:
+    
+    destination = config.get("MAIN", "folder")
+    whois_destination = config.get("MAIN","whois_folder")
+    
+    if not os.path.exists(os.path.join(curr_dir, destination)):
+                          os.mkdir(os.path.join(curr_dir, destination))
+
+    
+    if not os.path.exists(os.path.join(destination,whois_destination)):
+                          os.mkdir(os.path.join(curr_dir, destination, whois_destination))
+
 
 queue = Queue.Queue()
 
@@ -211,18 +223,7 @@ class App():
             
             if __name__ == '__main__':
 
-                if config:
-                    destination = config.get("MAIN", "folder")
-                    whois_destination = config.get("MAIN","whois_folder")
-                    if not os.path.exists(os.path.join(curr_dir, destination)):
-                                          os.mkdir(os.path.join(curr_dir, destination))
-
-                    
-                    if not os.path.exists(os.path.join(destination,whois_destination)):
-                                          os.mkdir(os.path.join(curr_dir, destination,whois_destination))
-                        
-
-
+                
 
                 t = Thread_Whois(queue)
                 t.setDaemon(True)
