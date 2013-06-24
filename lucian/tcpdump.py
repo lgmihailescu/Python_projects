@@ -211,16 +211,15 @@ class App():
             if __name__ == '__main__':
 
                 if config:
-                    destination = config.get("main", "folder")
-                    whois_destination = config.get("main","whois_folder")
+                    destination = config.get("MAIN", "folder")
+                    whois_destination = config.get("MAIN","whois_folder")
                     os.mkdir(destination)
                     
                     if not os.path.exists(os.path.join(destination,whois_destination)):
                                           os.mkdir(os.path.join(destination,whois_destination))
                         
                     curr_dir = os.getcwd()
-                else:
-                    out_file = None
+
 
 
                 t = Thread_Whois(queue)
