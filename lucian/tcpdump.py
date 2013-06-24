@@ -78,12 +78,15 @@ class Thread_Whois(threading.Thread):
             except socket.herror:
                 x = 'No results returned'
                 
-            response = whois_query(x[0])
+            response = whois_query(target)
+            host_addr = x[0]
             
             out = open(os.path.join(curr_dir, destination, whois_destination, target + '.log'), 'a')
             out.write('%s\n' % response)
             out.flush()
             os.fsync(out.fileno())
+
+            IPQueue.put([target,dict(ip = target, whois = response, host = host_addr)])
             
             
             #signals to queue job is done
@@ -124,8 +127,9 @@ class Thread_aggregate_zone(threading.Thread):
 
 
 class Thread_aggregate_IP(threading.Thread):
-    def __init__(self):
+    def __init__(self,queue):
         threading.Thread.__init__(self)
+        self.queue = queue
           
     def run(self):
         list_IPs = list()
@@ -133,9 +137,9 @@ class Thread_aggregate_IP(threading.Thread):
         while True:
             IPlist = defaultdict(list)
             
-            while len(list_by_IP) > 0:
+            while not self.queue.empty():
                 #grabs list from IP list
-                list_IPs.append(list_by_IP.pop())
+                list_IPs.append(self.queue.get())
             #print list_zones
             
             
@@ -177,16 +181,18 @@ def scanner(pkt):
 
         
         
-        list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
+        #list_by_IP.append([a.ipsrc,dict(timestamp=a.time, ip=a.ipsrc)])
+
+        #IPQueue.put(a.ipsrc)
 
         
         
 
 
 
-def whois_query(ip):
+def whois_query(address):
     try:
-        result = whois.query(ip)
+        result = whois.query(str(address))
         return result.name
     except:
         return "ERROR"
@@ -229,7 +235,7 @@ class App():
                 m.setDaemon(True)
                 m.start()
 
-                n = Thread_aggregate_IP()
+                n = Thread_aggregate_IP(IPQueue)
                 n.setDaemon(True)
                 n.start()
                 
