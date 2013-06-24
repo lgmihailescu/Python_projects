@@ -214,10 +214,12 @@ class App():
                 if config:
                     destination = config.get("MAIN", "folder")
                     whois_destination = config.get("MAIN","whois_folder")
-                    os.mkdir(destination)
+                    if not os.path.exists(os.path.join(curr_dir, destination)):
+                                          os.mkdir(os.path.join(curr_dir, destination))
+
                     
                     if not os.path.exists(os.path.join(destination,whois_destination)):
-                                          os.mkdir(os.path.join(destination,whois_destination))
+                                          os.mkdir(os.path.join(curr_dir, destination,whois_destination))
                         
 
 
