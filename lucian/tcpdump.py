@@ -16,6 +16,12 @@ from scapy.all import *
 import requests
 import json
 from daemon import runner
+import ConfigParser
+
+config = ConfigParser.ConfigParser()
+
+config.read("config.ini")
+
 
 
 queue = Queue.Queue()
@@ -61,7 +67,7 @@ class Thread_Whois(threading.Thread):
                 
             response = whois_query(x[0])
             
-            out = open(os.path.join(curr_dir, args.output, "WHOIS", target + '.log'), 'a')
+            out = open(os.path.join(curr_dir, destination, whois_destination, target + '.log'), 'a')
             out.write('%s\n' % response)
             out.flush()
             os.fsync(out.fileno())
@@ -179,13 +185,13 @@ def whois_query(ip):
 
 def whois_log(packet):
     if packet.ipsrc not in whois_logs:
-        whois_logs[packet.ipsrc] = open(os.path.join(curr_dir, args.output, "WHOIS", packet.ipsrc + '.log'), 'a')
+        whois_logs[packet.ipsrc] = open(os.path.join(curr_dir, destination, whois_destination, packet.ipsrc + '.log'), 'a')
         queue.put(packet.ipsrc)
         
 
 def log(packet):
     if packet.szone not in log_files:
-        log_files[packet.szone] = open(os.path.join(curr_dir, args.output, packet.szone + '.log'), 'a')
+        log_files[packet.szone] = open(os.path.join(curr_dir, destination, packet.szone + '.log'), 'a')
     log_files[packet.szone].write('%s\n' % packet.display_packet())
     log_files[packet.szone].flush()
     os.fsync(log_files[packet.szone].fileno())
@@ -203,19 +209,14 @@ class App():
         while True:
             
             if __name__ == '__main__':
-                parser = argparse.ArgumentParser(description='Capture DNS queries and output to specified directory')
-                parser.add_argument('--output', '-o', help='write dumps to specified folder')
-                parser.add_argument('start')
-                parser.add_argument('stop')
-                parser.add_argument('restart')
-                args = parser.parse_args()
-                print >> sys.stderr, 'Capturing DNS requests..'
 
-                if args.output:
-                    os.mkdir(args.output)
+                if config:
+                    destination = config.get("main", "folder")
+                    whois_destination = config.get("main","whois_folder")
+                    os.mkdir(destination)
                     
-                    if not os.path.exists(os.path.join(args.output,"WHOIS")):
-                                          os.mkdir(os.path.join(args.output,"WHOIS"))
+                    if not os.path.exists(os.path.join(destination,whois_destination)):
+                                          os.mkdir(os.path.join(destination,whois_destination))
                         
                     curr_dir = os.getcwd()
                 else:
