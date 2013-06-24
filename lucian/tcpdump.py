@@ -107,7 +107,7 @@ class Thread_aggregate_zone(threading.Thread):
             while len(list_by_zones) > 0:
                 #grabs list from zones list
                 list_zones.append(list_by_zones.pop())
-            #print list_zones
+            
             
             
             # execution
@@ -138,9 +138,9 @@ class Thread_aggregate_IP(threading.Thread):
             IPlist = defaultdict(list)
             
             while not self.queue.empty():
-                #grabs list from IP list
+                #grabs list from IPQueue
                 list_IPs.append(self.queue.get())
-            #print list_zones
+            
             
             
             # execution
@@ -155,7 +155,7 @@ class Thread_aggregate_IP(threading.Thread):
                     r = requests.post(url, data=json.dumps(payload))
                 
                 list_IPs[:] = []
-                
+            #self.queue.task_done()                
             time.sleep(10)
 
 
@@ -256,6 +256,7 @@ class App():
 
                          
                 queue.join()
+                IPQueue.join()
           
 app = App()
 daemon_runner = runner.DaemonRunner(app)
