@@ -1,0 +1,51 @@
+# Daily sunrise / sunset light reminders for Home Assistant.
+#
+# Sends a push notification to the iPhone 30 minutes before sunrise and
+# 30 minutes before sunset, every day (weekends included). The Home Assistant
+# Companion app mirrors the notification to the Apple Watch when the iPhone
+# is locked.
+#
+# Sun times come from the Home location set in
+# Settings > System > General, so nothing here needs coordinates.
+#
+# Before using: replace `notify.mobile_app_YOUR_IPHONE` with your phone's
+# notify action (Developer tools > Actions, search "mobile_app").
+#
+# Paste into automations.yaml, or create a new automation, open
+# "Edit in YAML" and paste one block at a time (without the leading "- ").
+
+- id: sun_reminder_sunrise
+  alias: "Sunrise light reminder (30 min before)"
+  description: "Daily nudge to get outside for the early morning sunlight."
+  mode: single
+  triggers:
+    - trigger: sun
+      event: sunrise
+      offset: "-00:30:00"
+  actions:
+    - action: notify.mobile_app_YOUR_IPHONE
+      data:
+        title: "Sunrise in 30 minutes"
+        message: "Get outside to catch the morning light. Look toward the sun, not straight at it."
+        data:
+          push:
+            # Lets the alert break through Focus modes (e.g. Sleep) if the
+            # Home Assistant app is allowed time-sensitive notifications.
+            interruption-level: time-sensitive
+
+- id: sun_reminder_sunset
+  alias: "Sunset light reminder (30 min before)"
+  description: "Daily nudge to get outside for the evening sunlight."
+  mode: single
+  triggers:
+    - trigger: sun
+      event: sunset
+      offset: "-00:30:00"
+  actions:
+    - action: notify.mobile_app_YOUR_IPHONE
+      data:
+        title: "Sunset in 30 minutes"
+        message: "Head outside to catch the evening light before the sun goes down."
+        data:
+          push:
+            interruption-level: time-sensitive
